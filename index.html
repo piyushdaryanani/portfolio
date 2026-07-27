@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piyush Daryanani — Software · Robotics · AI</title>
+<meta name="description" content="Piyush Daryanani — CS student at UNBC building social robots and screen-free learning games for children. Published at HRI '26.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0C0D0F;
+    --bg-soft:#141519;
+    --ink:#F2F3F5;
+    --muted:#9BA0A8;
+    --hairline:#26282C;
+    --accent:#5B8CFF;        /* one soft azure, used sparingly */
+    --accent-soft:#151F38;
+    --orange:#FF7A38;        /* rare highlight only */
+    --mono:'IBM Plex Mono', ui-monospace, monospace;
+    --sans:'IBM Plex Sans', system-ui, sans-serif;
+    --display:'Archivo', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:var(--bg)}
+  body{
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:#0C0D0F}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  /* ---------- boot preloader (minimal) ---------- */
+  #boot{
+    position:fixed;inset:0;z-index:999;background:var(--bg);
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity .5s ease, visibility .5s;
+  }
+  #boot.done{opacity:0;visibility:hidden}
+  #boot pre{font-family:var(--mono);font-size:13px;line-height:2;color:var(--muted);text-align:left;min-width:300px}
+  #boot pre .ok{color:var(--ink)}
+  #boot pre .cursor{display:inline-block;width:8px;height:14px;background:var(--accent);vertical-align:-2px;animation:blink .8s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+
+  /* ---------- nav ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(12,13,15,.78);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--hairline);
+    transform:translateY(-100%);
+  }
+  header.in{transform:translateY(0);transition:transform .6s cubic-bezier(.22,1,.36,1)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:58px}
+  .nav .brand{font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:var(--ink);text-decoration:none}
+  .nav .brand b{color:var(--accent)}
+  .nav ul{display:flex;gap:24px;list-style:none}
+  .nav a.link{font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--muted);text-decoration:none;transition:color .15s}
+  .nav a.link:hover,.nav a.link:focus-visible{color:var(--ink)}
+  @media(max-width:700px){.nav ul{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{min-height:100svh;display:flex;align-items:center;padding:110px 0 40px;border-bottom:1px solid var(--hairline)}
+  .hero-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:48px;align-items:center;width:100%}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:22px;
+  }
+  .eyebrow::before{content:"";width:28px;height:1px;background:var(--accent)}
+  h1{
+    font-family:var(--display);font-weight:860;font-stretch:110%;
+    font-size:clamp(46px,7.4vw,84px);line-height:.98;letter-spacing:-.025em;text-transform:uppercase;
+  }
+  h1 .word{display:block;overflow:hidden}
+  h1 .word span{display:block}
+  h1 .accent{color:var(--accent)}
+  .hero p.sub{margin-top:26px;font-size:19px;color:var(--muted);max-width:52ch}
+  .hero p.sub strong{color:var(--ink);font-weight:600}
+  .hero-meta{margin-top:14px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+  .cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+  .btn{
+    font-family:var(--mono);font-size:13px;letter-spacing:.04em;
+    padding:12px 22px;border:1px solid var(--ink);color:var(--ink);
+    text-decoration:none;background:transparent;display:inline-block;border-radius:999px;
+    transition:background .18s, color .18s, border-color .18s;
+    will-change:transform;
+  }
+  .btn:hover,.btn:focus-visible{background:var(--ink);color:#0C0D0F}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#0C0D0F;font-weight:500}
+  .btn.primary:hover,.btn.primary:focus-visible{background:#7AA2FF;border-color:#7AA2FF;color:#0C0D0F}
+  .scroll-hint{
+    margin-top:54px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:12px;
+  }
+  .scroll-hint .tick{display:inline-block;width:1px;height:28px;background:var(--ink);animation:tickDrop 1.6s ease-in-out infinite}
+  @keyframes tickDrop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  .schematic svg{width:100%;height:auto;display:block}
+  .schem-caption{margin-top:12px;text-align:center;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.06em}
+  .schem-frame{
+    border:1px solid var(--hairline);border-radius:18px;padding:30px 20px 18px;position:relative;background:var(--bg-soft);
+  }
+  .schem-frame::before{
+    content:"FIG. 1 — ROBOT LEARNING PLATFORM";
+    position:absolute;top:12px;left:16px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--muted);
+  }
+
+  /* ---------- ticker ---------- */
+  .ticker{
+    border-bottom:1px solid var(--hairline);overflow:hidden;background:var(--bg);
+    padding:14px 0;white-space:nowrap;position:relative;z-index:2;
+  }
+  .ticker-track{display:inline-flex;animation:tick 32s linear infinite;will-change:transform}
+  .ticker span{
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);padding:0 28px;position:relative;
+  }
+  .ticker span::after{content:"·";position:absolute;right:-4px;color:var(--accent)}
+  @keyframes tick{to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){.ticker-track{animation:none}}
+
+  /* ---------- assembly ---------- */
+  .assembly{border-bottom:1px solid var(--hairline);background:var(--bg-soft)}
+  .assembly-stage{min-height:100svh;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
+  @media(max-width:900px){.assembly-stage{grid-template-columns:1fr;padding:70px 0}}
+  .assembly svg{width:100%;max-width:470px;height:auto;margin:0 auto;display:block}
+  .assembly .part{opacity:0}
+  .assembly .steps{position:relative;min-height:240px}
+  .step{position:absolute;inset:0;opacity:0;display:flex;flex-direction:column;justify-content:center}
+  .step .no{font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+  .step h3{font-family:var(--display);font-weight:850;font-size:clamp(28px,3.8vw,44px);text-transform:uppercase;line-height:1.03;letter-spacing:-.02em}
+  .step p{margin-top:14px;color:var(--muted);max-width:44ch;font-size:16.5px}
+  @media(max-width:900px){
+    .assembly .steps{min-height:0}
+    .step{position:static;opacity:1;padding:20px 0;border-top:1px solid var(--hairline)}
+    .assembly .part{opacity:1}
+  }
+
+  /* ---------- field log ---------- */
+  .fieldlog{border-bottom:1px solid var(--hairline);background:#F5F6F7;color:#0C0D0F}
+  .fieldlog .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+  @media(max-width:720px){.fieldlog .wrap{grid-template-columns:repeat(2,1fr)}}
+  .log-item{padding:36px 16px;border-left:1px solid #DADCE0}
+  .log-item:first-child{border-left:none}
+  @media(max-width:720px){.log-item:nth-child(3){border-left:none}.log-item{border-top:1px solid #DADCE0}.log-item:nth-child(-n+2){border-top:none}}
+  .log-item .val{font-family:var(--display);font-weight:870;font-size:clamp(32px,4.4vw,48px)}
+  .log-item .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6A6E76;margin-top:2px}
+
+  /* ---------- sections ---------- */
+  section{padding:96px 0;border-bottom:1px solid var(--hairline)}
+  h2{
+    font-family:var(--display);font-weight:850;font-size:clamp(30px,4.4vw,44px);
+    letter-spacing:-.02em;text-transform:uppercase;margin-bottom:34px;
+  }
+
+  /* publication */
+  .pub-card{
+    background:var(--bg-soft);border:1px solid var(--hairline);border-radius:18px;
+    padding:34px;max-width:780px;position:relative;
+    box-shadow:0 0 0 1px rgba(255,255,255,.02);
+  }
+  .pub-tag{
+    display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:#0C0D0F;background:var(--accent);padding:4px 11px;border-radius:999px;margin-bottom:16px;
+  }
+  .pub-card h3{font-family:var(--display);font-weight:780;font-size:24px;line-height:1.25;letter-spacing:-.01em}
+  .pub-card .authors{margin-top:12px;color:var(--muted);font-size:14.5px}
+  .pub-card .authors b{color:var(--ink)}
+  .pub-card .venue{margin-top:10px;font-family:var(--mono);font-size:13px}
+  .pub-card .venue span{color:var(--accent)}
+  .pub-card a.doi{display:inline-block;margin-top:18px;font-family:var(--mono);font-size:13px;color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent)}
+  .pub-card a.doi:hover{color:var(--ink);border-color:var(--ink)}
+
+  /* fleet */
+  .fleet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  @media(max-width:840px){.fleet-grid{grid-template-columns:1fr}}
+  .bot{
+    background:var(--bg-soft);border:1px solid var(--hairline);border-radius:18px;padding:18px;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .bot:hover{transform:translateY(-4px);border-color:#3A3D43;background:#17181C}
+  .bot .photo{
+    aspect-ratio:4/3;border:1px dashed #3A3D43;border-radius:12px;background:var(--bg-soft);
+    display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;
+    font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-align:center;padding:10px;overflow:hidden;
+  }
+  .bot .photo img{width:100%;height:100%;object-fit:cover;display:block;border-radius:12px}
+  .bot h3{font-family:var(--display);font-weight:850;font-size:21px;margin-top:16px;text-transform:uppercase;letter-spacing:-.01em}
+  .bot .role{font-family:var(--mono);font-size:12px;color:var(--accent);margin-top:2px}
+  .bot p{margin-top:8px;color:var(--muted);font-size:14px}
+
+  /* experience */
+  .xp{max-width:840px}
+  .xp-item{display:grid;grid-template-columns:190px 1fr;gap:26px;padding:30px 0;border-top:1px solid var(--hairline)}
+  .xp-item:first-child{border-top:none;padding-top:0}
+  @media(max-width:640px){.xp-item{grid-template-columns:1fr;gap:6px}}
+  .xp-when{font-family:var(--mono);font-size:12.5px;color:var(--muted);padding-top:5px}
+  .xp-item h3{font-family:var(--display);font-weight:780;font-size:20px;letter-spacing:-.01em}
+  .xp-item .org{font-family:var(--mono);font-size:13px;color:var(--accent);margin-top:2px}
+  .xp-item p{margin-top:10px;color:var(--muted);font-size:15px;max-width:62ch}
+
+  /* projects */
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:780px){.proj-grid{grid-template-columns:1fr}}
+  .proj{
+    background:var(--bg-soft);border:1px solid var(--hairline);border-radius:18px;padding:28px;
+    display:flex;flex-direction:column;gap:12px;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .proj:hover{transform:translateY(-5px);border-color:#3A3D43;background:#17181C}
+  .proj.featured{grid-column:1 / -1;background:var(--accent-soft);border-color:#2C3B66}
+  .proj-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .proj h3{font-family:var(--display);font-weight:780;font-size:20px;line-height:1.25;letter-spacing:-.01em}
+  .proj .id{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;white-space:nowrap}
+  .proj p{color:var(--muted);font-size:14.5px;flex:1}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{
+    font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+    border:1px solid var(--hairline);color:var(--ink);background:var(--bg);padding:3px 11px;border-radius:999px;
+  }
+  .proj.featured .chip{background:#0F1524;border-color:#2C3B66}
+  .proj .note{font-family:var(--mono);font-size:12px;color:var(--orange)}
+
+  /* skills */
+  .skill-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;max-width:920px}
+  @media(max-width:700px){.skill-grid{grid-template-columns:1fr}}
+  .skill-group h3{
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:12px;
+  }
+  .skill-group h3::after{content:"";flex:1;height:1px;background:var(--hairline)}
+  .skill-group .chip{background:var(--bg-soft);border-color:#2E3035}
+
+  /* contact */
+  .contact{background:var(--bg-soft)}
+  .contact p{color:var(--muted);max-width:56ch;font-size:17px}
+  .contact .big-mail{
+    font-family:var(--display);font-weight:850;font-size:clamp(24px,4vw,40px);
+    color:var(--ink);text-decoration:none;text-transform:lowercase;letter-spacing:-.02em;
+    border-bottom:3px solid var(--accent);transition:color .2s;
+  }
+  .contact .big-mail:hover{color:var(--accent)}
+  .contact .cta-row{margin-top:30px}
+  footer{padding:32px 0 46px}
+  footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  footer span{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+  .reveal{opacity:0;transform:translateY(30px)}
+  @media(prefers-reduced-motion:reduce){
+    .reveal{opacity:1 !important;transform:none !important}
+    header{transform:none}
+    .scroll-hint .tick{animation:none}
+    #boot{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div id="boot" aria-hidden="true">
+  <pre id="boot-text">&gt; <span class="cursor"></span></pre>
+</div>
+
+<header id="site-nav">
+  <div class="wrap nav">
+    <a class="brand" href="#top"><b>PD</b> · piyush daryanani</a>
+    <ul>
+      <li><a class="link" href="#research">/research</a></li>
+      <li><a class="link" href="#fleet">/robots</a></li>
+      <li><a class="link" href="#experience">/experience</a></li>
+      <li><a class="link" href="#projects">/projects</a></li>
+      <li><a class="link" href="#contact">/contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow reveal">Software · Robotics · AI — Prince George, BC</div>
+        <h1>
+          <span class="word"><span class="w1">Piyush</span></span>
+          <span class="word"><span class="w2">Daryanani<span class="accent">.</span></span></span>
+        </h1>
+        <p class="sub reveal">I build <strong>social robots and screen-free learning games</strong> that real children use — from ROS 2 control software and computer vision to the 3D-printed parts they play with. Published at <strong>HRI '26</strong>.</p>
+        <p class="hero-meta reveal">B.Sc. Computer Science · UNBC · Dean's List · Class of 2027</p>
+        <div class="cta-row reveal">
+          <a class="btn primary magnetic" href="mailto:daryanani@unbc.ca">email me</a>
+          <a class="btn magnetic" href="https://linkedin.com/in/piyushdaryanani" target="_blank" rel="noopener">linkedin</a>
+          <!-- TODO: replace # with your GitHub URL -->
+          <a class="btn magnetic" href="#" target="_blank" rel="noopener">github</a>
+          <!-- TODO: upload your resume PDF next to this file so this button works -->
+          <a class="btn magnetic" href="Piyush_Daryanani_Resume.pdf" target="_blank" rel="noopener">resume.pdf</a>
+        </div>
+        <div class="scroll-hint reveal"><span class="tick"></span> scroll — the robot assembles below</div>
+      </div>
+
+      <figure class="schematic reveal" aria-label="Line schematic of a social robot">
+        <div class="schem-frame">
+          <svg id="hero-schem" viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="140" y="50" width="140" height="100" rx="18" stroke="#EDEFF3" stroke-width="2"/>
+            <circle cx="180" cy="95" r="12" stroke="#5B8CFF" stroke-width="2"/>
+            <circle cx="240" cy="95" r="12" stroke="#5B8CFF" stroke-width="2"/>
+            <path d="M195 125 Q210 136 225 125" stroke="#EDEFF3" stroke-width="2" stroke-linecap="round"/>
+            <line x1="210" y1="50" x2="210" y2="28" stroke="#EDEFF3" stroke-width="2"/>
+            <circle cx="210" cy="22" r="5" stroke="#FF7A38" stroke-width="2"/>
+            <line x1="210" y1="150" x2="210" y2="168" stroke="#EDEFF3" stroke-width="2"/>
+            <rect x="150" y="168" width="120" height="110" rx="14" stroke="#EDEFF3" stroke-width="2"/>
+            <rect x="176" y="192" width="68" height="40" rx="6" stroke="#5B8CFF" stroke-width="2"/>
+            <circle cx="210" cy="256" r="8" stroke="#EDEFF3" stroke-width="2"/>
+            <path d="M150 190 Q118 200 116 236" stroke="#EDEFF3" stroke-width="2" stroke-linecap="round"/>
+            <path d="M270 190 Q302 200 304 236" stroke="#EDEFF3" stroke-width="2" stroke-linecap="round"/>
+            <path d="M162 278 L150 312 H270 L258 278" stroke="#EDEFF3" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="176" cy="322" r="10" stroke="#EDEFF3" stroke-width="2"/>
+            <circle cx="244" cy="322" r="10" stroke="#EDEFF3" stroke-width="2"/>
+            <line x1="140" y1="352" x2="280" y2="352" stroke="#5B8CFF" stroke-width="1"/>
+            <line x1="140" y1="346" x2="140" y2="358" stroke="#5B8CFF" stroke-width="1"/>
+            <line x1="280" y1="346" x2="280" y2="358" stroke="#5B8CFF" stroke-width="1"/>
+            <text x="210" y="372" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5B8CFF">deployed with 113 children · 7 camps</text>
+          </svg>
+        </div>
+        <figcaption class="schem-caption">drawn in svg · animated on load</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <!-- ============ TICKER ============ -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="ticker-track">
+      <span>ROS 2</span><span>Python</span><span>Computer vision</span><span>LLM integration</span><span>Raspberry Pi</span><span>3D printing</span><span>HRI '26 full paper</span><span>113 children</span><span>7 camps</span><span>Java</span><span>C++</span><span>TypeScript</span><span>Angular</span><span>Node.js</span><span>TensorFlow.js</span>
+    </div>
+  </div>
+
+  <!-- ============ ASSEMBLY ============ -->
+  <div class="assembly" id="assembly">
+    <div class="wrap assembly-stage">
+      <div class="steps">
+        <div class="step" data-step="0">
+          <div class="no">01 — vision</div>
+          <h3>It sees.</h3>
+          <p>Real-time object detection with COCO-SSD and ArUco marker tracking let the games react to physical pieces children move with their hands.</p>
+        </div>
+        <div class="step" data-step="1">
+          <div class="no">02 — dialogue</div>
+          <h3>It talks.</h3>
+          <p>LLM integration drives natural conversation on QT, Misty, and Reachy-mini — social robots that guide children through each game.</p>
+        </div>
+        <div class="step" data-step="2">
+          <div class="no">03 — tangible I/O</div>
+          <h3>It feels analog.</h3>
+          <p>Touch sensors, RFID tags, and buzzers on 3D-printed hardware — five games with zero screens, built for independent play.</p>
+        </div>
+        <div class="step" data-step="3">
+          <div class="no">04 — platform</div>
+          <h3>It runs itself.</h3>
+          <p>Python and ROS 2 on Raspberry Pi, engineered for fully unsupervised operation — proven across 7 summer camps in the wild.</p>
+        </div>
+      </div>
+
+      <svg id="asm-svg" viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g class="part" data-part="0">
+          <rect x="140" y="50" width="140" height="100" rx="18" stroke="#EDEFF3" stroke-width="2"/>
+          <circle cx="180" cy="95" r="12" stroke="#5B8CFF" stroke-width="2"/>
+          <circle cx="240" cy="95" r="12" stroke="#5B8CFF" stroke-width="2"/>
+          <line x1="210" y1="50" x2="210" y2="28" stroke="#EDEFF3" stroke-width="2"/>
+          <circle cx="210" cy="22" r="5" stroke="#FF7A38" stroke-width="2"/>
+          <text x="320" y="80" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B8CFF">vision</text>
+        </g>
+        <g class="part" data-part="1">
+          <path d="M195 125 Q210 136 225 125" stroke="#EDEFF3" stroke-width="2" stroke-linecap="round"/>
+          <text x="320" y="140" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B8CFF">dialogue</text>
+        </g>
+        <g class="part" data-part="2">
+          <line x1="210" y1="150" x2="210" y2="168" stroke="#EDEFF3" stroke-width="2"/>
+          <rect x="150" y="168" width="120" height="110" rx="14" stroke="#EDEFF3" stroke-width="2"/>
+          <rect x="176" y="192" width="68" height="40" rx="6" stroke="#5B8CFF" stroke-width="2"/>
+          <circle cx="210" cy="256" r="8" stroke="#EDEFF3" stroke-width="2"/>
+          <path d="M150 190 Q118 200 116 236" stroke="#EDEFF3" stroke-width="2" stroke-linecap="round"/>
+          <path d="M270 190 Q302 200 304 236" stroke="#EDEFF3" stroke-width="2" stroke-linecap="round"/>
+          <text x="20" y="200" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B8CFF">tangible I/O</text>
+        </g>
+        <g class="part" data-part="3">
+          <path d="M162 278 L150 312 H270 L258 278" stroke="#EDEFF3" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="176" cy="322" r="10" stroke="#EDEFF3" stroke-width="2"/>
+          <circle cx="244" cy="322" r="10" stroke="#EDEFF3" stroke-width="2"/>
+          <text x="20" y="300" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B8CFF">ROS 2 · Pi</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ============ FIELD LOG ============ -->
+  <div class="fieldlog" id="fieldlog">
+    <div class="wrap">
+      <div class="log-item"><div class="val"><span class="count" data-target="1">0</span></div><div class="lbl">HRI '26 full paper</div></div>
+      <div class="log-item"><div class="val"><span class="count" data-target="113">0</span></div><div class="lbl">child participants</div></div>
+      <div class="log-item"><div class="val"><span class="count" data-target="7">0</span></div><div class="lbl">camps deployed</div></div>
+      <div class="log-item"><div class="val"><span class="count" data-target="5">0</span></div><div class="lbl">hardware games built</div></div>
+    </div>
+  </div>
+
+  <!-- ============ RESEARCH ============ -->
+  <section id="research">
+    <div class="wrap">
+      <div class="eyebrow reveal">Peer-reviewed research</div>
+      <h2 class="reveal">Publication</h2>
+      <article class="pub-card reveal">
+        <span class="pub-tag">Full paper · 23.2% acceptance</span>
+        <h3>Social Robots on the Loose: Supporting Children's Independent Learning in the Wild</h3>
+        <p class="authors">Kupaei, R., <b>Daryanani, P.</b>, Shaju, A., Olaniyan, M. A., Chavez-Castaneda, G., &amp; Chandra, S.</p>
+        <p class="venue">Proceedings of the 21st ACM/IEEE International Conference on Human–Robot Interaction <span>(HRI '26)</span></p>
+        <a class="doi" href="https://doi.org/10.1145/3757279.3785580" target="_blank" rel="noopener">doi.org/10.1145/3757279.3785580 ↗</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ FLEET ============ -->
+  <section id="fleet">
+    <div class="wrap">
+      <div class="eyebrow reveal">The robots I work with</div>
+      <h2 class="reveal">The Fleet</h2>
+      <div class="fleet-grid">
+        <!-- TODO: replace each .photo placeholder with e.g.  <div class="photo"><img src="qt.jpg" alt="QT robot in the Social Robotics Lab"></div>  -->
+        <article class="bot reveal">
+          <div class="photo"><span>[ IMG — QT.jpg ]</span><span>photo coming soon</span></div>
+          <h3>QT</h3>
+          <div class="role">humanoid · camp deployments</div>
+          <p>I built its autonomous interaction system — fully unsupervised sessions with 113 children across 7 summer camps.</p>
+        </article>
+        <article class="bot reveal">
+          <div class="photo"><span>[ IMG — MISTY.jpg ]</span><span>photo coming soon</span></div>
+          <h3>Misty</h3>
+          <div class="role">mobile robot · Misty Maze</div>
+          <p>Stars in Misty Maze, one of five screen-free games I built — children guide it through physical mazes.</p>
+        </article>
+        <article class="bot reveal">
+          <div class="photo"><span>[ IMG — REACHY.jpg ]</span><span>photo coming soon</span></div>
+          <h3>Reachy-mini</h3>
+          <div class="role">expressive robot · LLM dialogue</div>
+          <p>Integrated with LLM-driven conversation flows as part of the lab's multi-robot learning platform.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXPERIENCE ============ -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="eyebrow reveal">Where I've worked</div>
+      <h2 class="reveal">Experience</h2>
+      <div class="xp">
+        <div class="xp-item reveal">
+          <div class="xp-when">Feb 2025 — present</div>
+          <div>
+            <h3>Software Developer &amp; Research Assistant</h3>
+            <div class="org">Social Robotics Lab · UNBC</div>
+            <p>I design and build a screen-free, hardware-based game platform integrated with social robots for child-focused learning research — Python/ROS 2 applications, LLM integrations, and data tooling for multi-robot deployments. I run pilot studies with children, analyze logs and feedback, and iterate on the design.</p>
+          </div>
+        </div>
+        <div class="xp-item reveal">
+          <div class="xp-when">Feb 2024 — present</div>
+          <div>
+            <h3>Department Supervisor &amp; Machine Trainer</h3>
+            <div class="org">The Home Depot · Prince George, BC</div>
+            <p>I lead a team of 15–20 associates — coaching, scheduling, and performance feedback — while owning inventory management and resolving escalated customer issues. As Machine Trainer, I certify associates on equipment operation and safety standards.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section id="projects">
+    <div class="wrap">
+      <div class="eyebrow reveal">Things I've built</div>
+      <h2 class="reveal">Projects</h2>
+      <div class="proj-grid">
+        <article class="proj featured reveal">
+          <div class="proj-top">
+            <h3>Screen-Free Robot-Integrated Learning Games</h3>
+            <span class="id">2026 — present</span>
+          </div>
+          <p>Five fully hardware-based games — Memory Matrix, Match Point, Scramble Word, Misty Maze, and Tangram — built on Raspberry Pi with touch, RFID, buzzers, AI object detection, and ArUco markers. Custom parts are 3D-printed; there are no screens anywhere. Integrated with LLMs and the QT, Reachy-mini, and Misty social robots, the platform now runs unsupervised studies where children play independently.</p>
+          <div class="chips"><span class="chip">Raspberry Pi</span><span class="chip">Computer vision</span><span class="chip">LLMs</span><span class="chip">RFID</span><span class="chip">3D printing</span><span class="chip">ROS 2</span></div>
+          <span class="note">→ data being collected toward a planned publication</span>
+        </article>
+
+        <article class="proj reveal">
+          <div class="proj-top"><h3>QT Robot — Autonomous Interaction System</h3><span class="id">2025</span></div>
+          <p>Interaction and control software for the QT humanoid robot, enabling fully unsupervised operation in real classrooms — no adult control. Deployed across 7 summer camps with structured log processing to evaluate reliability and engagement.</p>
+          <div class="chips"><span class="chip">Python</span><span class="chip">ROS 2</span><span class="chip">Linux</span></div>
+        </article>
+
+        <article class="proj reveal">
+          <div class="proj-top"><h3>Task Reordering in Sparse Dependency Matrices</h3><span class="id">2025</span></div>
+          <p>Optimized task scheduling in large-scale software systems by minimizing feedback dependencies in sparse DSMs — Kosaraju's and Tarjan's algorithms for SCC detection, meta-graph construction, and topological sorting, evaluated on 27,000+ tasks.</p>
+          <div class="chips"><span class="chip">Java</span><span class="chip">Graph theory</span><span class="chip">Algorithms</span></div>
+        </article>
+
+        <article class="proj reveal">
+          <div class="proj-top"><h3>Nature's Heroes — Object Detection Game</h3><span class="id">2025</span></div>
+          <p>An educational waste-classification game powered by real-time, in-browser object detection with TensorFlow.js and COCO-SSD — client-side ML inference with state-driven scoring. Used in the peer-reviewed HRI '26 study.</p>
+          <div class="chips"><span class="chip">JavaScript</span><span class="chip">TensorFlow.js</span><span class="chip">COCO-SSD</span></div>
+        </article>
+
+        <article class="proj reveal">
+          <div class="proj-top"><h3>OCTBS — Cinema Ticket Booking System</h3><span class="id">2025</span></div>
+          <p>A full-stack booking app with real-time seat availability, an admin dashboard, and automated confirmation emails. Transaction-safe seat-locking logic and RESTful APIs prevent race conditions and double bookings under concurrent access.</p>
+          <div class="chips"><span class="chip">Angular</span><span class="chip">Node.js</span><span class="chip">Express</span><span class="chip">MySQL</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="eyebrow reveal">What I work with</div>
+      <h2 class="reveal">Skills</h2>
+      <div class="skill-grid">
+        <div class="skill-group reveal">
+          <h3>Languages</h3>
+          <div class="chips"><span class="chip">Python</span><span class="chip">Java</span><span class="chip">C++</span><span class="chip">C</span><span class="chip">JavaScript</span><span class="chip">TypeScript</span><span class="chip">Bash</span></div>
+        </div>
+        <div class="skill-group reveal">
+          <h3>AI &amp; Data</h3>
+          <div class="chips"><span class="chip">TensorFlow.js</span><span class="chip">Computer vision</span><span class="chip">LLM integration</span><span class="chip">Log analysis</span></div>
+        </div>
+        <div class="skill-group reveal">
+          <h3>Frontend &amp; Backend</h3>
+          <div class="chips"><span class="chip">Angular</span><span class="chip">Node.js</span><span class="chip">Express</span><span class="chip">Django</span><span class="chip">REST APIs</span><span class="chip">HTML/CSS</span></div>
+        </div>
+        <div class="skill-group reveal">
+          <h3>Systems &amp; Tools</h3>
+          <div class="chips"><span class="chip">ROS 2</span><span class="chip">Linux</span><span class="chip">Raspberry Pi</span><span class="chip">Git</span><span class="chip">AWS EC2</span><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">3D printing</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <div class="eyebrow reveal">Get in touch</div>
+      <h2 class="reveal">Let's build something</h2>
+      <p class="reveal">I'm looking for software engineering, AI/ML, and robotics internships for 2026–27. If you're working on something where software meets the physical world — or you just want to talk robots — I'd love to hear from you.</p>
+      <p class="reveal" style="margin-top:24px"><a class="big-mail" href="mailto:daryanani@unbc.ca">daryanani@unbc.ca</a></p>
+      <div class="cta-row reveal">
+        <a class="btn magnetic" href="https://linkedin.com/in/piyushdaryanani" target="_blank" rel="noopener">linkedin</a>
+        <!-- TODO: replace # with your GitHub URL -->
+        <a class="btn magnetic" href="#" target="_blank" rel="noopener">github</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Piyush Daryanani</span>
+    <span>designed &amp; built by me · animated with GSAP · drawn in SVG</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var boot = document.getElementById('boot');
+
+  function showAllStatic(){
+    document.querySelectorAll('.reveal').forEach(function(el){ el.style.opacity = 1; el.style.transform = 'none'; });
+    document.querySelectorAll('#asm-svg .part').forEach(function(el){ el.style.opacity = 1; });
+    document.querySelectorAll('.count').forEach(function(el){ el.textContent = el.dataset.target; });
+    document.getElementById('site-nav').classList.add('in');
+    if (boot) boot.classList.add('done');
+  }
+
+  if (reduced || typeof gsap === 'undefined') { showAllStatic(); return; }
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* seamless ticker loop */
+  var track = document.getElementById('ticker-track');
+  track.innerHTML += track.innerHTML;
+
+  /* boot sequence */
+  var bootLines = [
+    '> piyush.daryanani',
+    '> loading fleet .... <span class="ok">[QT] [MISTY] [REACHY]</span>',
+    '> vision systems ... <span class="ok">OK</span>',
+    '> ros2 nodes ....... <span class="ok">OK</span>',
+    '> portfolio ........ <span class="ok">ONLINE</span>'
+  ];
+  var bootEl = document.getElementById('boot-text');
+  var li = 0;
+  function nextLine(){
+    if (li < bootLines.length) {
+      bootEl.innerHTML = bootLines.slice(0, li+1).join('\n') + '\n> <span class="cursor"></span>';
+      li++;
+      setTimeout(nextLine, 160);
+    } else {
+      setTimeout(function(){ boot.classList.add('done'); startHero(); }, 240);
+    }
+  }
+  setTimeout(nextLine, 200);
+  setTimeout(function(){ if (!boot.classList.contains('done')) { boot.classList.add('done'); startHero(); } }, 3200);
+
+  var heroStarted = false;
+  function startHero(){
+    if (heroStarted) return; heroStarted = true;
+    document.getElementById('site-nav').classList.add('in');
+    gsap.from('h1 .w1', {yPercent: 110, duration: .8, ease: 'power3.out', delay: .05});
+    gsap.from('h1 .w2', {yPercent: 110, duration: .8, ease: 'power3.out', delay: .17});
+    gsap.to('.hero .reveal', {opacity: 1, y: 0, duration: .7, ease: 'power2.out', stagger: .09, delay: .35});
+    var heroStrokes = document.querySelectorAll('#hero-schem path, #hero-schem rect, #hero-schem circle, #hero-schem line');
+    heroStrokes.forEach(function(el){
+      var len = 600;
+      try { if (el.getTotalLength) len = el.getTotalLength(); } catch(e){}
+      el.style.strokeDasharray = len;
+      el.style.strokeDashoffset = len;
+    });
+    gsap.to(heroStrokes, {strokeDashoffset: 0, duration: 1.5, ease: 'power2.inOut', stagger: .045, delay: .4});
+  }
+
+  /* magnetic buttons */
+  document.querySelectorAll('.magnetic').forEach(function(btn){
+    btn.addEventListener('pointermove', function(e){
+      var r = btn.getBoundingClientRect();
+      var x = e.clientX - r.left - r.width/2;
+      var y = e.clientY - r.top - r.height/2;
+      gsap.to(btn, {x: x*.2, y: y*.26, duration: .3, ease: 'power2.out'});
+    });
+    btn.addEventListener('pointerleave', function(){
+      gsap.to(btn, {x: 0, y: 0, duration: .45, ease: 'elastic.out(1, .45)'});
+    });
+  });
+
+  /* assembly: pinned scrub on desktop */
+  ScrollTrigger.matchMedia({
+    '(min-width: 901px)': function(){
+      var steps = gsap.utils.toArray('.step');
+      var parts = gsap.utils.toArray('#asm-svg .part');
+      var tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#assembly',
+          start: 'top top',
+          end: '+=2400',
+          pin: true,
+          scrub: 0.6
+        }
+      });
+      steps.forEach(function(step, i){
+        var part = parts[i];
+        tl.to(part, {opacity: 1, duration: .5}, i)
+          .fromTo(part, {y: -18}, {y: 0, duration: .5}, i)
+          .to(step, {opacity: 1, y: 0, duration: .35}, i + .05);
+        if (i < steps.length - 1) {
+          tl.to(step, {opacity: 0, y: -14, duration: .3}, i + .7);
+        }
+      });
+    },
+    '(max-width: 900px)': function(){
+      gsap.utils.toArray('#asm-svg .part').forEach(function(p){ p.style.opacity = 1; });
+    }
+  });
+
+  /* counters */
+  document.querySelectorAll('.count').forEach(function(el){
+    var target = parseInt(el.dataset.target, 10);
+    var obj = {v: 0};
+    gsap.to(obj, {
+      v: target, duration: 1.5, ease: 'power2.out',
+      snap: {v: 1},
+      onUpdate: function(){ el.textContent = obj.v; },
+      scrollTrigger: {trigger: '#fieldlog', start: 'top 82%'}
+    });
+  });
+
+  /* generic reveals */
+  gsap.utils.toArray('section .reveal').forEach(function(el){
+    gsap.to(el, {
+      opacity: 1, y: 0, duration: .7, ease: 'power2.out',
+      scrollTrigger: {trigger: el, start: 'top 88%'}
+    });
+  });
+})();
+</script>
+</body>
+</html>
