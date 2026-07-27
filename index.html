@@ -185,9 +185,9 @@
   }
   .bot:hover{transform:translateY(-4px);border-color:#3A3D43;background:#17181C}
   .bot .photo{
-    aspect-ratio:4/3;border:1px dashed #3A3D43;border-radius:12px;background:var(--bg-soft);
+    aspect-ratio:4/3;border:1px solid var(--hairline);border-radius:12px;background:var(--bg-soft);
     display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;
-    font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-align:center;padding:10px;overflow:hidden;
+    font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-align:center;overflow:hidden;
   }
   .bot .photo img{width:100%;height:100%;object-fit:cover;display:block;border-radius:12px}
   .bot h3{font-family:var(--display);font-weight:850;font-size:21px;margin-top:16px;text-transform:uppercase;letter-spacing:-.01em}
@@ -429,19 +429,19 @@
       <div class="fleet-grid">
         <!-- TODO: replace each .photo placeholder with e.g.  <div class="photo"><img src="qt.jpg" alt="QT robot in the Social Robotics Lab"></div>  -->
         <article class="bot reveal">
-          <div class="photo"><span>[ IMG — QT.jpg ]</span><span>photo coming soon</span></div>
+          <div class="photo"><img src="qt.jpg" alt="QT humanoid social robot"></div>
           <h3>QT</h3>
           <div class="role">humanoid · camp deployments</div>
           <p>I built its autonomous interaction system — fully unsupervised sessions with 113 children across 7 summer camps.</p>
         </article>
         <article class="bot reveal">
-          <div class="photo"><span>[ IMG — MISTY.jpg ]</span><span>photo coming soon</span></div>
+          <div class="photo"><img src="misty.jpg" alt="Misty mobile robot"></div>
           <h3>Misty</h3>
           <div class="role">mobile robot · Misty Maze</div>
           <p>Stars in Misty Maze, one of five screen-free games I built — children guide it through physical mazes.</p>
         </article>
         <article class="bot reveal">
-          <div class="photo"><span>[ IMG — REACHY.jpg ]</span><span>photo coming soon</span></div>
+          <div class="photo"><img src="reachy.jpg" alt="Reachy-mini expressive robot"></div>
           <h3>Reachy-mini</h3>
           <div class="role">expressive robot · LLM dialogue</div>
           <p>Integrated with LLM-driven conversation flows as part of the lab's multi-robot learning platform.</p>
