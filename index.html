@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Piyush Daryanani — Software · Robotics · AI</title>
 <meta name="description" content="Piyush Daryanani — CS student at UNBC building social robots and screen-free learning games for children. Published at HRI '26.">
+<link rel="icon" type="image/png" sizes="128x128" href="favicon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<meta property="og:title" content="Piyush Daryanani — Software · Robotics · AI">
+<meta property="og:description" content="CS student at UNBC building social robots and screen-free learning games. Published at HRI '26.">
+<meta property="og:image" content="https://piyushdaryanani.github.io/og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://piyushdaryanani.github.io/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -190,9 +198,55 @@
     font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-align:center;overflow:hidden;
   }
   .bot .photo img{width:100%;height:100%;object-fit:cover;display:block;border-radius:12px}
+  .bot .photo.illus{padding:8px;background:radial-gradient(90% 120% at 50% 100%, #1B1E26 0%, var(--bg-soft) 70%)}
+  .bot .photo.illus svg{width:100%;height:100%}
   .bot h3{font-family:var(--display);font-weight:850;font-size:21px;margin-top:16px;text-transform:uppercase;letter-spacing:-.01em}
   .bot .role{font-family:var(--mono);font-size:12px;color:var(--accent);margin-top:2px}
   .bot p{margin-top:8px;color:var(--muted);font-size:14px}
+
+  /* the build: gallery */
+  .gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:34px}
+  @media(max-width:780px){.gallery-grid{grid-template-columns:1fr}}
+  .shot{margin:0;background:var(--bg-soft);border:1px solid var(--hairline);border-radius:18px;padding:14px;transition:transform .2s, border-color .2s}
+  .shot:hover{transform:translateY(-4px);border-color:#3A3D43}
+  .shot.wide{grid-column:1 / -1}
+  .shot .slot{
+    aspect-ratio:16/8;border:1px dashed #3A3D43;border-radius:12px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.06em;text-align:center;padding:12px;
+  }
+  .shot:not(.wide) .slot{aspect-ratio:4/3}
+  .shot img{width:100%;border-radius:12px;display:block}
+  .shot figcaption{font-family:var(--mono);font-size:12px;color:var(--muted);padding:12px 4px 2px;letter-spacing:.02em}
+
+  /* integrated robots strip */
+  .robostrip{display:flex;flex-wrap:wrap;align-items:center;gap:18px;border-top:1px solid var(--hairline);padding-top:26px}
+  .robostrip-label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-right:6px}
+  .robopngs{border-top:1px solid var(--hairline);padding-top:26px}
+  .robopng-row{display:flex;flex-wrap:wrap;gap:56px;justify-content:center;align-items:flex-end;margin-top:22px}
+  .robopng{margin:0;text-align:center}
+  .robopng img{height:150px;width:auto;display:block;margin:0 auto;filter:drop-shadow(0 14px 22px rgba(0,0,0,.5));transition:transform .25s ease}
+  .robopng:hover img{transform:translateY(-6px)}
+  .robopng figcaption{margin-top:14px}
+  .robopng b{display:block;font-family:var(--display);font-weight:750;font-size:14px}
+  .robopng i{display:block;font-style:normal;font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:2px}
+  @media(max-width:640px){.robopng-row{gap:34px}.robopng img{height:110px}}
+  .rchip{display:flex;align-items:center;gap:10px;border:1px solid var(--hairline);border-radius:999px;padding:8px 18px 8px 10px;background:var(--bg-soft)}
+  .rchip svg{width:44px;height:34px}
+  .rchip img{width:64px;height:48px;object-fit:cover;border-radius:10px;border:1px solid var(--hairline)}
+  .rchip b{display:block;font-family:var(--display);font-weight:750;font-size:14px;line-height:1.2}
+  .rchip i{display:block;font-style:normal;font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+
+  /* research grid + about */
+  .research-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:840px){.research-grid{grid-template-columns:1fr}}
+  .research-grid .pub-card{max-width:none;display:flex;flex-direction:column}
+  .research-grid .pub-card .authors{flex:1}
+  .pub-tag.progress{background:var(--orange)}
+  .about-grid{display:grid;grid-template-columns:340px 1fr;gap:34px;align-items:start}
+  @media(max-width:780px){.about-grid{grid-template-columns:1fr}}
+  .slot.portrait{aspect-ratio:4/5}
+  .about-text p{color:var(--muted);font-size:16px;margin-bottom:16px;max-width:58ch}
 
   /* experience */
   .xp{max-width:840px}
@@ -270,7 +324,7 @@
     <a class="brand" href="#top"><b>PD</b> · piyush daryanani</a>
     <ul>
       <li><a class="link" href="#research">/research</a></li>
-      <li><a class="link" href="#fleet">/robots</a></li>
+      <li><a class="link" href="#work">/work</a></li>
       <li><a class="link" href="#experience">/experience</a></li>
       <li><a class="link" href="#projects">/projects</a></li>
       <li><a class="link" href="#contact">/contact</a></li>
@@ -289,7 +343,7 @@
           <span class="word"><span class="w1">Piyush</span></span>
           <span class="word"><span class="w2">Daryanani<span class="accent">.</span></span></span>
         </h1>
-        <p class="sub reveal">I build <strong>social robots and screen-free learning games</strong> that real children use — from ROS 2 control software and computer vision to the 3D-printed parts they play with. Published at <strong>HRI '26</strong>.</p>
+        <p class="sub reveal">I'm a computer science student who builds real systems — <strong>full-stack apps, large-scale algorithms, computer vision, and robots people actually use</strong>. My research was published at <strong>HRI '26</strong>, and I lead a 20-person team on the side.</p>
         <p class="hero-meta reveal">B.Sc. Computer Science · UNBC · Dean's List · Class of 2027</p>
         <div class="cta-row reveal">
           <a class="btn primary magnetic" href="mailto:daryanani@unbc.ca">email me</a>
@@ -338,6 +392,30 @@
     </div>
   </div>
 
+  <!-- ============ RESEARCH ============ -->
+  <section id="work">
+    <div class="wrap">
+      <div class="eyebrow reveal">Research — Social Robotics Lab, UNBC</div>
+      <h2 class="reveal">Research</h2>
+      <div class="research-grid">
+        <article class="pub-card reveal">
+        <span class="pub-tag">Published · full paper · 23.2% acceptance</span>
+        <h3>Social Robots on the Loose: Supporting Children's Independent Learning in the Wild</h3>
+        <p class="authors">Kupaei, R., <b>Daryanani, P.</b>, Shaju, A., Olaniyan, M. A., Chavez-Castaneda, G., &amp; Chandra, S.</p>
+        <p class="venue">Proceedings of the 21st ACM/IEEE International Conference on Human–Robot Interaction <span>(HRI '26)</span></p>
+        <a class="doi" href="https://doi.org/10.1145/3757279.3785580" target="_blank" rel="noopener">doi.org/10.1145/3757279.3785580 ↗</a>
+      </article>
+        <article class="pub-card reveal">
+          <span class="pub-tag progress">In progress → publication #2</span>
+          <h3>Screen-Free Robot-Integrated Learning Games</h3>
+          <p class="authors">Five hardware-based games — <b>two built from scratch by me, all five with my work in them</b> — now running unsupervised studies with children.</p>
+          <p class="venue">Raspberry Pi · computer vision · LLMs · ROS 2 · <span>3D-printed hardware</span></p>
+          <a class="doi" href="#assembly">see how the platform works ↓</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ ASSEMBLY ============ -->
   <div class="assembly" id="assembly">
     <div class="wrap assembly-stage">
@@ -360,7 +438,7 @@
         <div class="step" data-step="3">
           <div class="no">04 — platform</div>
           <h3>It runs itself.</h3>
-          <p>Python and ROS 2 on Raspberry Pi, engineered for fully unsupervised operation — proven across 7 summer camps in the wild.</p>
+          <p>Python and ROS 2 on Raspberry Pi, engineered for fully unsupervised operation — independent-play studies are running right now.</p>
         </div>
       </div>
 
@@ -396,56 +474,75 @@
     </div>
   </div>
 
-  <!-- ============ FIELD LOG ============ -->
+  <!-- ============ BY THE NUMBERS ============ -->
   <div class="fieldlog" id="fieldlog">
     <div class="wrap">
-      <div class="log-item"><div class="val"><span class="count" data-target="1">0</span></div><div class="lbl">HRI '26 full paper</div></div>
-      <div class="log-item"><div class="val"><span class="count" data-target="113">0</span></div><div class="lbl">child participants</div></div>
-      <div class="log-item"><div class="val"><span class="count" data-target="7">0</span></div><div class="lbl">camps deployed</div></div>
+      <div class="log-item"><div class="val"><span class="count" data-target="1">0</span></div><div class="lbl">published HRI '26 paper</div></div>
+      <div class="log-item"><div class="val"><span class="count" data-target="27000">0</span>+</div><div class="lbl">tasks optimized — graph algorithms</div></div>
       <div class="log-item"><div class="val"><span class="count" data-target="5">0</span></div><div class="lbl">hardware games built</div></div>
+      <div class="log-item"><div class="val"><span class="count" data-target="3">0</span></div><div class="lbl">robots integrated</div></div>
     </div>
   </div>
 
-  <!-- ============ RESEARCH ============ -->
-  <section id="research">
+  <!-- ============ THE BUILD ============ -->
+  <section id="fleet">
     <div class="wrap">
-      <div class="eyebrow reveal">Peer-reviewed research</div>
-      <h2 class="reveal">Publication</h2>
-      <article class="pub-card reveal">
-        <span class="pub-tag">Full paper · 23.2% acceptance</span>
-        <h3>Social Robots on the Loose: Supporting Children's Independent Learning in the Wild</h3>
-        <p class="authors">Kupaei, R., <b>Daryanani, P.</b>, Shaju, A., Olaniyan, M. A., Chavez-Castaneda, G., &amp; Chandra, S.</p>
-        <p class="venue">Proceedings of the 21st ACM/IEEE International Conference on Human–Robot Interaction <span>(HRI '26)</span></p>
-        <a class="doi" href="https://doi.org/10.1145/3757279.3785580" target="_blank" rel="noopener">doi.org/10.1145/3757279.3785580 ↗</a>
-      </article>
+      <div class="eyebrow reveal">The hardware</div>
+      <h2 class="reveal">The Build</h2>
+
+      <div class="gallery-grid">
+        <!-- TODO: replace each placeholder with e.g. <figure class="shot wide reveal"><img src="games.jpg" alt="..."><figcaption>caption text</figcaption></figure> -->
+        <figure class="shot wide reveal">
+          <div class="slot"><span>[ ADD — hardware-games.jpg ]</span><span>the five screen-free games, laid out</span></div>
+          <figcaption>Five games, zero screens — Memory Matrix, Match Point, Scramble Word, Misty Maze &amp; Tangram</figcaption>
+        </figure>
+        <figure class="shot reveal">
+          <div class="slot"><span>[ ADD — build-detail.jpg ]</span><span>3D prints, wiring, or RFID close-up</span></div>
+          <figcaption>Custom 3D-printed parts with RFID, touch &amp; buzzer I/O</figcaption>
+        </figure>
+        <figure class="shot reveal">
+          <div class="slot"><span>[ ADD — deployment.jpg ]</span><span>a game set up in the field</span></div>
+          <figcaption>Deployed for unsupervised, independent play in ongoing studies</figcaption>
+        </figure>
+      </div>
+
+      <div class="robopngs reveal">
+        <span class="robostrip-label">robots I've worked with</span>
+        <div class="robopng-row">
+          <figure class="robopng">
+            <img src="qt.png" alt="QT humanoid robot">
+            <figcaption><b>QT</b><i>humanoid · autonomous camps</i></figcaption>
+          </figure>
+          <figure class="robopng">
+            <img src="misty.png" alt="Misty robot">
+            <figcaption><b>Misty</b><i>mobile · Misty Maze</i></figcaption>
+          </figure>
+          <figure class="robopng">
+            <img src="reachy.png" alt="Reachy-mini robot">
+            <figcaption><b>Reachy-mini</b><i>expressive · LLM dialogue</i></figcaption>
+          </figure>
+        </div>
+      </div>
+      <p class="reveal" style="margin-top:26px;font-family:var(--mono);font-size:13px;color:var(--orange)">status: unsupervised studies underway → publication #2 in preparation</p>
     </div>
   </section>
 
-  <!-- ============ FLEET ============ -->
-  <section id="fleet">
+  <!-- ============ ABOUT ============ -->
+  <section id="about">
     <div class="wrap">
-      <div class="eyebrow reveal">The robots I work with</div>
-      <h2 class="reveal">The Fleet</h2>
-      <div class="fleet-grid">
-        <!-- TODO: replace each .photo placeholder with e.g.  <div class="photo"><img src="qt.jpg" alt="QT robot in the Social Robotics Lab"></div>  -->
-        <article class="bot reveal">
-          <div class="photo"><img src="qt.jpg" alt="QT humanoid social robot"></div>
-          <h3>QT</h3>
-          <div class="role">humanoid · camp deployments</div>
-          <p>I built its autonomous interaction system — fully unsupervised sessions with 113 children across 7 summer camps.</p>
-        </article>
-        <article class="bot reveal">
-          <div class="photo"><img src="misty.jpg" alt="Misty mobile robot"></div>
-          <h3>Misty</h3>
-          <div class="role">mobile robot · Misty Maze</div>
-          <p>Stars in Misty Maze, one of five screen-free games I built — children guide it through physical mazes.</p>
-        </article>
-        <article class="bot reveal">
-          <div class="photo"><img src="reachy.jpg" alt="Reachy-mini expressive robot"></div>
-          <h3>Reachy-mini</h3>
-          <div class="role">expressive robot · LLM dialogue</div>
-          <p>Integrated with LLM-driven conversation flows as part of the lab's multi-robot learning platform.</p>
-        </article>
+      <div class="eyebrow reveal">Beyond the code</div>
+      <h2 class="reveal">About me</h2>
+      <div class="about-grid">
+        <figure class="shot reveal" style="margin:0">
+          <!-- TODO: replace slot with <div class="slot"><img src="me.jpg" alt="Piyush Daryanani" style="width:100%;height:100%;object-fit:cover;border-radius:12px"></div> -->
+          <div class="slot portrait"><span>[ ADD — me.jpg ]</span><span>a photo of you — lab, campus, or a clean portrait</span></div>
+        </figure>
+        <div class="about-text reveal">
+          <p>I'm a computer science student at UNBC (Dean's List, class of 2027) who likes building things that leave the screen — software that ends up in someone's hands, not just in a repo.</p>
+          <p>At the Social Robotics Lab I write the Python and ROS 2 that lets robots run on their own in the real world. In my coursework I've optimized scheduling across 27,000+ tasks with graph algorithms and shipped full-stack apps with Angular, Node, and MySQL.</p>
+          <p>Outside of school I supervise a team of 15–20 at The Home Depot — which taught me more about communication, ownership, and staying calm under pressure than any textbook.</p>
+          <p style="color:var(--ink)">I'm looking for software engineering, AI/ML, and robotics internships for 2027.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -579,6 +676,7 @@
   function showAllStatic(){
     document.querySelectorAll('.reveal').forEach(function(el){ el.style.opacity = 1; el.style.transform = 'none'; });
     document.querySelectorAll('#asm-svg .part').forEach(function(el){ el.style.opacity = 1; });
+    document.querySelectorAll('.bot .illus svg *').forEach(function(el){ el.style.strokeDasharray = 'none'; el.style.strokeDashoffset = 0; });
     document.querySelectorAll('.count').forEach(function(el){ el.textContent = el.dataset.target; });
     document.getElementById('site-nav').classList.add('in');
     if (boot) boot.classList.add('done');
@@ -652,7 +750,7 @@
         scrollTrigger: {
           trigger: '#assembly',
           start: 'top top',
-          end: '+=2400',
+          end: '+=1800',
           pin: true,
           scrub: 0.6
         }
@@ -679,8 +777,23 @@
     gsap.to(obj, {
       v: target, duration: 1.5, ease: 'power2.out',
       snap: {v: 1},
-      onUpdate: function(){ el.textContent = obj.v; },
+      onUpdate: function(){ el.textContent = obj.v.toLocaleString('en-US'); },
       scrollTrigger: {trigger: '#fieldlog', start: 'top 82%'}
+    });
+  });
+
+  /* fleet illustrations draw themselves on scroll */
+  document.querySelectorAll('.bot .illus svg').forEach(function(svg){
+    var strokes = svg.querySelectorAll('path, rect, circle, line');
+    strokes.forEach(function(el){
+      var len = 500;
+      try { if (el.getTotalLength) len = el.getTotalLength(); } catch(e){}
+      el.style.strokeDasharray = len;
+      el.style.strokeDashoffset = len;
+    });
+    gsap.to(strokes, {
+      strokeDashoffset: 0, duration: 1.6, ease: 'power2.inOut', stagger: .05,
+      scrollTrigger: {trigger: svg, start: 'top 85%'}
     });
   });
 
